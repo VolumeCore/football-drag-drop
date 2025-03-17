@@ -1,0 +1,35 @@
+<div class="container">
+    <div class="players-list" cdkDropList id="playersList"
+         [cdkDropListData]="players"
+         [cdkDropListConnectedTo]="positionIds"
+         (cdkDropListDropped)="onDrop($event)">
+        <div *ngFor="let player of players" cdkDrag [cdkDragData]="player" class="player-item">
+            <div class="player" *ngIf="!player.position">
+                <img [src]="player.photo" class="player-photo">
+                <div class="player-info">{{ player.number }} {{ player.surname }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="field-container">
+        <img src="assets/field.jpg" class="field-image">
+        <div *ngFor="let pos of positions"
+             [id]="pos.id"
+             cdkDropList
+             [cdkDropListData]="pos"
+             [cdkDropListConnectedTo]="connectedLists"
+             (cdkDropListDropped)="onDrop($event)"
+             class="field-position"
+             [style.left.px]="pos.x"
+             [style.top.px]="pos.y">
+            <div *ngIf="pos.player"
+                 cdkDrag
+                 [cdkDragData]="pos.player"
+                 class="player-on-field"
+                 (dblclick)="returnPlayerToList(pos.player); pos.player = null">
+                <img [src]="pos.player.photo" class="player-photo">
+                <div class="player-info">{{ pos.player.number }} {{ pos.player.surname }}</div>
+            </div>
+        </div>
+    </div>
+</div>
